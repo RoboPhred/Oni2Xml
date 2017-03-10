@@ -114,57 +114,6 @@ namespace Oni2Xml.SaveData
 
             return component;
         }
-
-        //private static Prefab ParsePrefab(IReader reader)
-        //{
-        //    string name = reader.ReadKleiString();
-        //    Debug.WriteLine("Parsing prefab " + name);
-
-        //    int capacity = reader.ReadInt32();
-        //    int length = reader.ReadInt32();
-
-        //    var prefab = new Prefab()
-        //    {
-        //        tag = name,
-        //        capacity = capacity,
-        //        length = length,
-        //        Components = new List<Component>()
-        //    };
-
-        //    prefab.position = reader.ReadVector3();
-        //    prefab.rotation = reader.ReadQuaternion();
-        //    prefab.scale = reader.ReadVector3();
-
-        //    prefab.folder = reader.ReadByte();
-
-
-        //    var numComponents = reader.ReadInt32();
-        //    for(var i = 0; i < numComponents; i++)
-        //    {
-        //        var component = ParseComponent(reader);
-        //        prefab.Components.Add(component);
-        //    }
-
-        //    return prefab;
-        //}
-
-        //private static Component ParseComponent(IReader reader)
-        //{
-        //    string key = reader.ReadKleiString();
-        //    Debug.WriteLine("Parsing component " + key);
-        //    int length = reader.ReadInt32();
-        //    byte[] data = reader.ReadBytes(length);
-
-        //    var component = new Component()
-        //    {
-        //        name = key,
-        //        rawData = data
-        //    };
-
-        //    // TODO: Identify mono behaviors from key and try to make sense of their data.
-
-        //    return component;
-        //}
     }
 
     struct GameObjectData
