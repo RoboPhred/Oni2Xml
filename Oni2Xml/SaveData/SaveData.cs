@@ -85,7 +85,7 @@ namespace Oni2Xml.SaveData
             }
 
 
-            data.prefabData = PrefabParser.Parse(reader);
+            data.gameObjectData = GameObjectDataParser.Parse(reader);
 
             LoadSection("Game+GameSaveData", data, typeReader, reader);
 
@@ -108,7 +108,7 @@ namespace Oni2Xml.SaveData
 
         Header header;
         IList<TypeTemplate> templates;
-        PrefabData prefabData;
+        GameObjectData gameObjectData;
         IDictionary<string, ObjectTemplateData> sections;
     }
 }

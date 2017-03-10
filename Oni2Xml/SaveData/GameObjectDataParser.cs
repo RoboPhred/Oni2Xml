@@ -4,55 +4,73 @@ using System.Diagnostics;
 
 namespace Oni2Xml.SaveData
 {
-    static class PrefabParser
+    static class GameObjectDataParser
     {
 
 
-        public static PrefabData Parse(IReader reader)
+        public static GameObjectData Parse(IReader reader)
         {
 
-            var prefabs = new PrefabData()
+            var data = new GameObjectData()
             {
-                prefabs = new List<Prefab>()
+                roots = new List<GameObjectRoot>()
             };
 
             int numPrefabs = reader.ReadInt32();
             for (var i = 0; i< numPrefabs; i++)
             {
-                var prefab = ParsePrefab(reader);
-                prefabs.prefabs.Add(prefab);
+                var root = ParseRoot(reader);
+                data.roots.Add(root);
             }
 
-            return prefabs;
+            return data;
         }
 
 
-        private static Prefab ParsePrefab(IReader reader)
+        private static GameObjectRoot ParseRoot(IReader reader)
         {
             string name = reader.ReadKleiString();
-            Debug.WriteLine("Parsing prefab " + name);
+            Debug.WriteLine("Parsing tppy " + name);
             int capacity = reader.ReadInt32();
             int length = reader.ReadInt32();
 
             int startPos = reader.Position;
 
-            var prefab = new Prefab()
+            var root = new GameObjectRoot()
             {
                 tag = name,
                 capacity = capacity,
                 length = length,
-                Components = new List<Component>()
+                GameObject = new List<GameObject>()
             };
 
-            int headerLength = reader.Position;
+            for(var i = 0; i < capacity; i++)
+            {
+                var gameObj = ParseGameObject(reader);
+                root.GameObject.Add(gameObj);
+            }
 
-            prefab.position = reader.ReadVector3();
-            prefab.rotation = reader.ReadQuaternion();
-            prefab.scale = reader.ReadVector3();
 
-            prefab.folder = reader.ReadByte();
+            if (reader.Position - startPos != length)
+            {
+                Debug.WriteLine(string.Format("WARN: Prefab {0} read differing bytes than length", name));
+                reader.SkipBytes(length - (reader.Position - startPos));
+            }
 
-            headerLength = reader.Position - headerLength;
+            return root;
+        }
+
+
+        private static GameObject ParseGameObject(IReader reader)
+        {
+            var gameObj = new GameObject();
+
+            gameObj.Components = new List<Component>();
+            gameObj.position = reader.ReadVector3();
+            gameObj.rotation = reader.ReadQuaternion();
+            gameObj.scale = reader.ReadVector3();
+
+            gameObj.folder = reader.ReadByte();
 
 
             var numComponents = reader.ReadInt32();
@@ -63,21 +81,10 @@ namespace Oni2Xml.SaveData
                 var component = ParseComponent(reader);
                 componentLength = reader.Position - componentLength;
                 totalComponentLength += componentLength;
-                prefab.Components.Add(component);
+                gameObj.Components.Add(component);
             }
 
-            if (headerLength + totalComponentLength != length)
-            {
-                Debug.WriteLine(string.Format("WARN: Prefab {0} component lengths do not add up to total length", name));
-            }
-
-            if (reader.Position - startPos != length)
-            {
-                Debug.WriteLine(string.Format("WARN: Prefab {0} read differing bytes than length", name));
-                reader.SkipBytes(length - (reader.Position - startPos));
-            }
-
-            return prefab;
+            return gameObj;
         }
 
         private static Component ParseComponent(IReader reader)
@@ -160,17 +167,22 @@ namespace Oni2Xml.SaveData
         //}
     }
 
-    struct PrefabData
+    struct GameObjectData
     {
-        public IList<Prefab> prefabs;
+        public IList<GameObjectRoot> roots;
     }
 
-    class Prefab
+    struct GameObjectRoot
     {
         public string tag;
         public int capacity;
         public int length;
 
+        public IList<GameObject> GameObject;
+    }
+
+    class GameObject
+    {
         public Vector3 position;
         public Quaternion rotation;
 
