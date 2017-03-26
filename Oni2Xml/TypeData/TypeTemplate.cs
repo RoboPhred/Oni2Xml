@@ -10,8 +10,6 @@ namespace Oni2Xml.TypeData
             var template = new TypeTemplate();
 
             template.name = reader.ReadKleiString();
-            Debug.WriteLine("Parsing template " + template.name);
-
 
             var numFields = reader.ReadInt32();
             var numProperties = reader.ReadInt32();
@@ -19,7 +17,6 @@ namespace Oni2Xml.TypeData
             for (var i = 0; i < numFields; i++)
             {
                 var fieldName = reader.ReadKleiString();
-                Debug.WriteLine("Parsing field " + fieldName);
                 var typeInfo = TypeInfo.Parse(reader);
                 template.members.Add(new TypeField
                 {
@@ -31,7 +28,6 @@ namespace Oni2Xml.TypeData
             for (var i = 0; i < numProperties; i++)
             {
                 var propertyName = reader.ReadKleiString();
-                Debug.WriteLine("Parsing property " + propertyName);
 
                 var typeInfo = TypeInfo.Parse(reader);
                 template.members.Add(new TypeField

@@ -85,7 +85,7 @@ namespace Oni2Xml.SaveData
             }
 
 
-            data.gameObjectData = GameObjectDataParser.Parse(reader);
+            data.gameObjectData = GameObjectDataParser.Parse(reader, typeReader);
 
             LoadSection("Game+GameSaveData", data, typeReader, reader);
 

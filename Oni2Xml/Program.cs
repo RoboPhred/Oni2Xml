@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Oni2Xml.Readers;
-using Oni2Xml.SaveData;
+﻿using Oni2Xml.Readers;
 using System;
 using System.IO;
 

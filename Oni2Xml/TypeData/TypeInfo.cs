@@ -39,5 +39,10 @@
         public SerializationTypeInfo info;
         public string name;
         public TypeInfo[] subTypes;
+
+        public override string ToString()
+        {
+            return string.Format("TypeInfo {0} ({1})", name, info);
+        }
     }
 }

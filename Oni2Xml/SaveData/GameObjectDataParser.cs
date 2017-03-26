@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Oni2Xml.Readers;
+using Oni2Xml.TypeData;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -8,7 +10,7 @@ namespace Oni2Xml.SaveData
     {
 
 
-        public static GameObjectData Parse(IReader reader)
+        public static GameObjectData Parse(IReader reader, TypeReader typeReader)
         {
 
             var data = new GameObjectData()
@@ -19,7 +21,7 @@ namespace Oni2Xml.SaveData
             int numPrefabs = reader.ReadInt32();
             for (var i = 0; i< numPrefabs; i++)
             {
-                var root = ParseRoot(reader);
+                var root = ParseRoot(reader, typeReader);
                 data.roots.Add(root);
             }
 
@@ -27,10 +29,9 @@ namespace Oni2Xml.SaveData
         }
 
 
-        private static GameObjectRoot ParseRoot(IReader reader)
+        private static GameObjectRoot ParseRoot(IReader reader, TypeReader typeReader)
         {
             string name = reader.ReadKleiString();
-            Debug.WriteLine("Parsing tppy " + name);
             int capacity = reader.ReadInt32();
             int length = reader.ReadInt32();
 
@@ -46,7 +47,7 @@ namespace Oni2Xml.SaveData
 
             for(var i = 0; i < capacity; i++)
             {
-                var gameObj = ParseGameObject(reader);
+                var gameObj = ParseGameObject(reader, typeReader);
                 root.GameObject.Add(gameObj);
             }
 
@@ -61,7 +62,7 @@ namespace Oni2Xml.SaveData
         }
 
 
-        private static GameObject ParseGameObject(IReader reader)
+        private static GameObject ParseGameObject(IReader reader, TypeReader typeReader)
         {
             var gameObj = new GameObject();
 
@@ -78,7 +79,7 @@ namespace Oni2Xml.SaveData
             for (var i = 0; i < numComponents; i++)
             {
                 int componentLength = reader.Position;
-                var component = ParseComponent(reader);
+                var component = ParseComponent(reader, typeReader);
                 componentLength = reader.Position - componentLength;
                 totalComponentLength += componentLength;
                 gameObj.Components.Add(component);
@@ -87,10 +88,9 @@ namespace Oni2Xml.SaveData
             return gameObj;
         }
 
-        private static Component ParseComponent(IReader reader)
+        private static Component ParseComponent(IReader reader, TypeReader typeReader)
         {
             string key = reader.ReadKleiString();
-            Debug.WriteLine("Parsing component " + key);
             int length = reader.ReadInt32();
 
             int startPos = reader.Position;
@@ -108,6 +108,21 @@ namespace Oni2Xml.SaveData
             {
                 Debug.WriteLine(string.Format("WARN: Component {0} read differing bytes than length", key));
                 reader.SkipBytes(length - (reader.Position - startPos));
+            }
+
+            if (typeReader.HasTemplate(key))
+            {
+                var templateReader = new FastReader(data);
+                component.parsedData = typeReader.ReadTemplateObject(key, templateReader);
+                if (!templateReader.IsFinished)
+                {
+                    component.saveLoadableDetailsData = templateReader.ReadBytes(data.Length - templateReader.Position);
+                    Debug.WriteLine(string.Format("WARN: Component {0} template did not read all data.  This may be a sign it uses additional parsing (ISaveLoadableDetailJson).", key));
+                }
+            }
+            else
+            {
+                Debug.WriteLine(string.Format("WARN: Component {0} has no matching type template", key));
             }
 
             // TODO: Identify mono behaviors from key and try to make sense of their data.
@@ -148,5 +163,7 @@ namespace Oni2Xml.SaveData
     {
         public string name;
         public byte[] rawData;
+        public ObjectTemplateData parsedData;
+        public byte[] saveLoadableDetailsData;
     }
 }
