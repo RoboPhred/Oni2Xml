@@ -121,6 +121,7 @@ namespace Oni2Xml.SaveData
         public IList<GameObjectRoot> roots;
     }
 
+    [DebuggerDisplay("GameObectRoot {tag}")]
     struct GameObjectRoot
     {
         public string tag;
@@ -142,6 +143,7 @@ namespace Oni2Xml.SaveData
         public IList<Component> Components;
     }
 
+    [DebuggerDisplay("Component {name}")]
     struct Component
     {
         public string name;
