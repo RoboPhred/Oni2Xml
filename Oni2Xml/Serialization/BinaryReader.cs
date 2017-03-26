@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace Oni2Xml.Readers
+namespace Oni2Xml.Serialization
 {
-    public class FastReader : IReader
+    class BinaryReader : IReader
     {
         private int idx;
         private byte[] bytes;
@@ -29,7 +29,7 @@ namespace Oni2Xml.Readers
             }
         }
 
-        public FastReader(byte[] bytes)
+        public BinaryReader(byte[] bytes)
         {
             this.bytes = bytes;
         }

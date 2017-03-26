@@ -2,44 +2,24 @@
 
 namespace Oni2Xml.TypeData
 {
-
-    class ObjectTemplateData
-    {
-        public ObjectTemplateData(TypeTemplate template)
-        {
-            this.template = template;
-            this.members = new Dictionary<string, TypeInstanceData>();
-        }
-
-        public TypeTemplate template;
-        public IDictionary<string, TypeInstanceData> members;
-    }
-
     class TypeInstanceData
     {
-        public TypeInstanceData(TypeInfo typeInfo)
-        {
-            this.typeInfo = typeInfo;
-        }
-
-        public TypeInfo typeInfo;
     }
 
     class ObjectInstanceData : TypeInstanceData
     {
-        public ObjectInstanceData(TypeInfo typeInfo, ObjectTemplateData data)
-            : base(typeInfo)
+        public ObjectInstanceData(TypeTemplate template)
         {
-            this.data = data;
+            this.template = template;
         }
 
-        public ObjectTemplateData data;
+        public TypeTemplate template;
+        public IDictionary<string, TypeInstanceData> members = new Dictionary<string, TypeInstanceData>();
     }
 
     class PrimitiveInstanceData : TypeInstanceData
     {
-        public PrimitiveInstanceData(TypeInfo typeInfo, object value)
-            : base(typeInfo)
+        public PrimitiveInstanceData(object value)
         {
             this.value = value;
         }
@@ -49,8 +29,7 @@ namespace Oni2Xml.TypeData
 
     class ArrayInstanceData : TypeInstanceData
     {
-        public ArrayInstanceData(TypeInfo typeInfo)
-            : base(typeInfo)
+        public ArrayInstanceData()
         {
             this.values = new List<TypeInstanceData>();
         }
@@ -60,8 +39,7 @@ namespace Oni2Xml.TypeData
 
     class PairInstanceData : TypeInstanceData
     {
-        public PairInstanceData(TypeInfo typeInfo, TypeInstanceData key, TypeInstanceData value) 
-            : base(typeInfo)
+        public PairInstanceData(TypeInstanceData key, TypeInstanceData value) 
         {
             this.key = key;
             this.value = value;
@@ -73,8 +51,7 @@ namespace Oni2Xml.TypeData
 
     class DictionaryInstanceData : TypeInstanceData
     {
-        public DictionaryInstanceData(TypeInfo typeInfo)
-            : base(typeInfo)
+        public DictionaryInstanceData()
         {
             this.entries = new Dictionary<TypeInstanceData, TypeInstanceData>();
         }

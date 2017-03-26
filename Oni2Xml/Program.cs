@@ -1,4 +1,5 @@
-﻿using Oni2Xml.Readers;
+﻿using Oni2Xml.Serialization;
+using Oni2Xml.SaveData;
 using System;
 using System.IO;
 
@@ -18,12 +19,14 @@ namespace Oni2Xml
             Load(args[0]);
         }
 
-        static void Load(string path)
+        static OniSaveData Load(string path)
         {
             var bytes = File.ReadAllBytes(path);
-            var reader = new FastReader(bytes);
+            var reader = new Serialization.BinaryReader(bytes);
 
-            var data = SaveData.SaveData.Parse(reader);
+            var data = new OniSaveData();
+            data.Deserialize(reader);
+            return data;
         }
     }
 }

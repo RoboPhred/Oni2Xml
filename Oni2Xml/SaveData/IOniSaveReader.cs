@@ -1,0 +1,14 @@
+﻿using Oni2Xml.Serialization;
+using Oni2Xml.TypeData;
+
+namespace Oni2Xml.SaveData
+{
+
+    interface IOniSaveReader : IReader
+    {
+        ITypeTemplateRegistry TemplateRegistry { get; }
+
+        TypeInstanceData ReadTemplateData(string name);
+    }
+
+}

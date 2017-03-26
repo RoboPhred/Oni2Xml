@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oni2Xml
+﻿namespace Oni2Xml.Serialization
 {
-
-    public interface IReader
+    interface IReader
     {
         int Position { get; }
 
@@ -43,5 +36,4 @@ namespace Oni2Xml
 
         byte[] RawBytes();
     }
-
 }

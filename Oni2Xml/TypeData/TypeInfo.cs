@@ -1,26 +1,32 @@
-﻿namespace Oni2Xml.TypeData
-{
-    class TypeInfo
-    {
-        public static TypeInfo Parse(IReader reader)
-        {
-            TypeInfo typeInfo = new TypeInfo();
+﻿using Oni2Xml.Serialization;
 
-            typeInfo.info = (SerializationTypeInfo)reader.ReadByte();
-            SerializationTypeInfo typeValue = typeInfo.info & SerializationTypeInfo.VALUE_MASK;
+namespace Oni2Xml.TypeData
+{
+    class TypeInfo : ISerializable
+    {
+        public SerializationTypeInfo info;
+        public string name;
+        public TypeInfo[] subTypes;
+
+        public void Deserialize(IReader reader)
+        {
+            this.info = (SerializationTypeInfo)reader.ReadByte();
+            SerializationTypeInfo typeValue = this.info & SerializationTypeInfo.VALUE_MASK;
 
             if (typeValue == SerializationTypeInfo.UserDefined || typeValue == SerializationTypeInfo.Enumeration)
             {
-                typeInfo.name = reader.ReadKleiString();
+                this.name = reader.ReadKleiString();
             }
 
-            if (typeInfo.info.HasFlag(SerializationTypeInfo.IS_GENERIC_TYPE))
+            if (this.info.HasFlag(SerializationTypeInfo.IS_GENERIC_TYPE))
             {
                 byte numTypeArgs = reader.ReadByte();
-                typeInfo.subTypes = new TypeInfo[numTypeArgs];
+                this.subTypes = new TypeInfo[numTypeArgs];
                 for (int index = 0; index < (int)numTypeArgs; ++index)
                 {
-                    typeInfo.subTypes[index] = Parse(reader);
+                    var subType = new TypeInfo();
+                    subType.Deserialize(reader);
+                    this.subTypes[index] = subType;
                 }
             }
             else
@@ -28,17 +34,42 @@
                 switch (typeValue)
                 {
                     case SerializationTypeInfo.Array:
-                        typeInfo.subTypes = new TypeInfo[] { Parse(reader) };
+                        var subType = new TypeInfo();
+                        subType.Deserialize(reader);
+                        this.subTypes = new TypeInfo[] { subType };
                         break;
                 }
             }
-
-            return typeInfo;
         }
 
-        public SerializationTypeInfo info;
-        public string name;
-        public TypeInfo[] subTypes;
+        public void Serialize(IWriter writer)
+        {
+            writer.WriteByte((byte)this.info);
+            SerializationTypeInfo typeValue = this.info & SerializationTypeInfo.VALUE_MASK;
+
+            if (typeValue == SerializationTypeInfo.UserDefined || typeValue == SerializationTypeInfo.Enumeration)
+            {
+                writer.WriteKleiString(this.name);
+            }
+
+            if (this.info.HasFlag(SerializationTypeInfo.IS_GENERIC_TYPE))
+            {
+                writer.WriteByte((byte)this.subTypes.Length);
+                foreach(var subType in this.subTypes)
+                {
+                    subType.Serialize(writer);
+                }
+            }
+            else
+            {
+                switch (typeValue)
+                {
+                    case SerializationTypeInfo.Array:
+                        this.subTypes[0].Serialize(writer);
+                        break;
+                }
+            }
+        }
 
         public override string ToString()
         {

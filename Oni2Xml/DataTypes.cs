@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Oni2Xml.Serialization;
 
 namespace Oni2Xml
 {
@@ -16,12 +12,24 @@ namespace Oni2Xml
             return vector2I;
         }
 
+        public static void WriteVector2I(this IWriter writer, Vector2I v)
+        {
+            writer.WriteInt32(v.x);
+            writer.WriteInt32(v.y);
+        }
+
         public static Vector2 ReadVector2(this IReader reader)
         {
             Vector2 vector2;
             vector2.x = reader.ReadSingle();
             vector2.y = reader.ReadSingle();
             return vector2;
+        }
+
+        public static void WriteVector2(this IWriter writer, Vector2 v)
+        {
+            writer.WriteSingle(v.x);
+            writer.WriteSingle(v.y);
         }
 
         public static Vector3 ReadVector3(this IReader reader)
@@ -31,6 +39,13 @@ namespace Oni2Xml
             vector3.y = reader.ReadSingle();
             vector3.z = reader.ReadSingle();
             return vector3;
+        }
+
+        public static void WriteVector3(this IWriter writer, Vector3 v)
+        {
+            writer.WriteSingle(v.x);
+            writer.WriteSingle(v.y);
+            writer.WriteSingle(v.z);
         }
 
         public static Color ReadColour(this IReader reader)
@@ -47,6 +62,14 @@ namespace Oni2Xml
             return color;
         }
 
+        public static void WriteColour(this IWriter writer, Color c)
+        {
+            writer.WriteByte((byte)(c.r * byte.MaxValue));
+            writer.WriteByte((byte)(c.g * byte.MaxValue));
+            writer.WriteByte((byte)(c.b * byte.MaxValue));
+            writer.WriteByte((byte)(c.a * byte.MaxValue));
+        }
+
         public static Quaternion ReadQuaternion(this IReader reader)
         {
             return new Quaternion()
@@ -56,6 +79,14 @@ namespace Oni2Xml
                 z = reader.ReadSingle(),
                 w = reader.ReadSingle()
             };
+        }
+
+        public static void WriteQuaternion(this IWriter writer, Quaternion q)
+        {
+            writer.WriteSingle(q.x);
+            writer.WriteSingle(q.y);
+            writer.WriteSingle(q.z);
+            writer.WriteSingle(q.w);
         }
     }
 
