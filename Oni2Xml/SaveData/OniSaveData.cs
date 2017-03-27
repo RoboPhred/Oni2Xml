@@ -17,7 +17,7 @@ namespace Oni2Xml.SaveData
         public OniSaveDataHeader header = new OniSaveDataHeader();
         public IList<TypeTemplate> templates = new List<TypeTemplate>();
         public IList<GameObjectRoot> gameObjectRoots = new List<GameObjectRoot>();
-        public IDictionary<string, TypeInstanceData> sections = new Dictionary<string, TypeInstanceData>();
+        public IDictionary<string, ObjectInstanceData> sections = new Dictionary<string, ObjectInstanceData>();
 
         public void Deserialize(IReader reader)
         {
@@ -46,7 +46,7 @@ namespace Oni2Xml.SaveData
 
 
             // Settings
-            this.sections = new Dictionary<string, TypeInstanceData>();
+            this.sections = new Dictionary<string, ObjectInstanceData>();
 
             var oniReader = new OniSaveReader(reader, new TypeTemplateRegistry(this.templates));
 
@@ -99,6 +99,25 @@ namespace Oni2Xml.SaveData
             writer.WriteKleiString("world");
 
 
+            // Settings
+            var oniWriter = new OniSaveWriter(writer, new TypeTemplateRegistry(this.templates));
+
+            WriteSection("Klei.SaveFileRoot", this, oniWriter);
+            WriteSection("Game+Settings", this, oniWriter);
+
+
+            // Game State
+            writer.WriteChars(SAVE_HEADER);
+            writer.WriteInt32(6);
+            writer.WriteInt32(0);
+
+            writer.WriteInt32(this.gameObjectRoots.Count);
+            foreach(var gameObjectRoot in this.gameObjectRoots)
+            {
+                gameObjectRoot.Serialize(oniWriter);
+            }
+
+            WriteSection("Game+GameSaveData", this, oniWriter);
         }
 
         private static void LoadSection(string sectionName, OniSaveData data, IOniSaveReader reader)
@@ -113,6 +132,12 @@ namespace Oni2Xml.SaveData
                 sectionName,
                 reader.ReadTemplateData(sectionName)
             );
+        }
+
+        private static void WriteSection(string sectionName, OniSaveData data, IOniSaveWriter writer)
+        {
+            writer.WriteKleiString(sectionName);
+            writer.WriteTemplateData(data.sections[sectionName]);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Oni2Xml.TypeData
     {
         bool HasTemplate(string name);
 
-        TypeInstanceData ReadTemplate(string name, IReader reader);
-        void WriteTemplate(TypeInstanceData data, IWriter writer);
+        ObjectInstanceData ReadTemplate(string name, IReader reader);
+        void WriteTemplate(ObjectInstanceData data, IWriter writer);
     }
 }

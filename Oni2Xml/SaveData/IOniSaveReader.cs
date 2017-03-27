@@ -8,7 +8,7 @@ namespace Oni2Xml.SaveData
     {
         ITypeTemplateRegistry TemplateRegistry { get; }
 
-        TypeInstanceData ReadTemplateData(string name);
+        ObjectInstanceData ReadTemplateData(string name);
     }
 
 }

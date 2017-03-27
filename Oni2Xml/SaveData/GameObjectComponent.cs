@@ -9,7 +9,7 @@ namespace Oni2Xml.SaveData
     class Component : IOniSaveSerializable
     {
         public string name;
-        public TypeInstanceData saveLoadableData;
+        public ObjectInstanceData saveLoadableData;
         public byte[] saveLoadableDetailsData;
 
         public void Deserialize(IOniSaveReader reader)

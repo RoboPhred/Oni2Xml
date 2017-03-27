@@ -93,7 +93,7 @@ namespace Oni2Xml.SaveData
             return this.reader.ReadSingle();
         }
 
-        public TypeInstanceData ReadTemplateData(string name)
+        public ObjectInstanceData ReadTemplateData(string name)
         {
             return this.typeRegistry.ReadTemplate(name, this);
         }

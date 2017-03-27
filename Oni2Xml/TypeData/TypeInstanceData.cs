@@ -14,7 +14,8 @@ namespace Oni2Xml.TypeData
         }
 
         public TypeTemplate template;
-        public IDictionary<string, TypeInstanceData> members = new Dictionary<string, TypeInstanceData>();
+        public IDictionary<string, TypeInstanceData> fields = new Dictionary<string, TypeInstanceData>();
+        public IDictionary<string, TypeInstanceData> properties = new Dictionary<string, TypeInstanceData>();
     }
 
     class PrimitiveInstanceData : TypeInstanceData
@@ -55,6 +56,9 @@ namespace Oni2Xml.TypeData
         {
             this.entries = new Dictionary<TypeInstanceData, TypeInstanceData>();
         }
+
+        // TODO: Remove.  Hack to force key ordering so we can test round trip by shasum.
+        public TypeInstanceData[] OrderedKeys;
 
         public IDictionary<TypeInstanceData, TypeInstanceData> entries;
     }

@@ -18,14 +18,14 @@ namespace Oni2Xml.TypeData
             return this.typeReader.HasTemplate(name);
         }
 
-        public TypeInstanceData ReadTemplate(string name, IReader reader)
+        public ObjectInstanceData ReadTemplate(string name, IReader reader)
         {
             return this.typeReader.ReadTemplateObject(name, reader);
         }
 
-        public void WriteTemplate(TypeInstanceData data, IWriter writer)
+        public void WriteTemplate(ObjectInstanceData data, IWriter writer)
         {
-            throw new NotImplementedException();
+            this.typeReader.WriteTemplateObject(data, writer);
         }
     }
 }

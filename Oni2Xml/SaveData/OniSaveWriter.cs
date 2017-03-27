@@ -6,16 +6,20 @@ namespace Oni2Xml.SaveData
 {
     class OniSaveWriter : IOniSaveWriter
     {
+        private IWriter writer;
+        private ITypeTemplateRegistry typeRegistry;
+
         public OniSaveWriter(IWriter writer, ITypeTemplateRegistry typeRegistry)
         {
-
+            this.writer = writer;
+            this.typeRegistry = typeRegistry;
         }
 
         public int Position
         {
             get
             {
-                throw new NotImplementedException();
+                return this.writer.Position;
             }
         }
 
@@ -23,78 +27,78 @@ namespace Oni2Xml.SaveData
         {
             get
             {
-                throw new NotImplementedException();
+                return this.typeRegistry;
             }
         }
 
         public void WriteByte(byte val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteByte(val);
         }
 
         public void WriteBytes(byte[] val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteBytes(val);
         }
 
         public void WriteChars(char[] val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteChars(val);
         }
 
         public void WriteDouble(double val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteDouble(val);
         }
 
         public void WriteInt16(short val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteInt16(val);
         }
 
         public void WriteInt32(int val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteInt32(val);
         }
 
         public void WriteInt64(long val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteInt64(val);
         }
 
         public void WriteKleiString(string val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteKleiString(val);
         }
 
         public void WriteSByte(sbyte val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteSByte(val);
         }
 
         public void WriteSingle(float val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteSingle(val);
         }
 
-        public void WriteTemplateData(TypeInstanceData data)
+        public void WriteTemplateData(ObjectInstanceData data)
         {
-            throw new NotImplementedException();
+            this.typeRegistry.WriteTemplate(data, this);
         }
 
         public void WriteUInt16(ushort val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteUInt16(val);
         }
 
         public void WriteUInt32(uint val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteUInt32(val);
         }
 
         public void WriteUInt64(ulong val)
         {
-            throw new NotImplementedException();
+            this.writer.WriteUInt64(val);
         }
     }
 }
