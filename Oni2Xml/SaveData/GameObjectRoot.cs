@@ -9,8 +9,8 @@ namespace Oni2Xml.SaveData
     [DebuggerDisplay("GameObectRoot {tag}")]
     class GameObjectRoot : IOniSaveSerializable
     {
-        string tag;
-        IList<GameObject> gameObjects = new List<GameObject>();
+        public string tag;
+        public IList<GameObject> gameObjects = new List<GameObject>();
 
         public void Deserialize(IOniSaveReader reader)
         {

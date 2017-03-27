@@ -443,7 +443,7 @@ namespace Oni2Xml.TypeData
         private T EnsurePrimitive<T>(TypeInstanceData data)
         {
             var prim = EnsureInstanceType<PrimitiveInstanceData>(data);
-            if (prim.value is T == false)
+            if (prim.value != null && prim.value is T == false)
             {
                 throw new Exception("Expected primitive value of type " + typeof(T).Name);
             }

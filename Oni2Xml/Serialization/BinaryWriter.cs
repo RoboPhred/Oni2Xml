@@ -91,6 +91,11 @@ namespace Oni2Xml.Serialization
 
         public void WriteKleiString(string val)
         {
+            if (val == null)
+            {
+                writer.Write((int)0);
+                return;
+            }
             var bytes = Encoding.UTF8.GetBytes(val);
             writer.Write(bytes.Length);
             writer.Write(bytes);

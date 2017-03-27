@@ -14,6 +14,9 @@ namespace Oni2Xml.SaveData
             'V'
         };
 
+        public int versionMajor;
+        public int versionMinor;
+
         public OniSaveDataHeader header = new OniSaveDataHeader();
         public IList<TypeTemplate> templates = new List<TypeTemplate>();
         public IList<GameObjectRoot> gameObjectRoots = new List<GameObjectRoot>();
@@ -65,10 +68,17 @@ namespace Oni2Xml.SaveData
             }
             int verMajor = reader.ReadInt32();
             int verMinor = reader.ReadInt32();
-            if (verMajor != 6 || verMinor > 0)
+
+            // Save versions:
+            //  pre-tu: 6.0
+            //  tu: 7.1
+            if (verMajor != 7 || verMinor > 1)
             {
-                throw new Exception(string.Format("SAVE FILE VERSION MISMATCH! Expected {0}.{1} but got {2}.{3}", 6, 0, verMajor, verMinor));
+                throw new Exception(string.Format("SAVE FILE VERSION MISMATCH! Expected {0}.{1} but got {2}.{3}", 7, 1, verMajor, verMinor));
             }
+
+            this.versionMajor = verMajor;
+            this.versionMinor = verMinor;
 
             int numPrefabs = reader.ReadInt32();
             for (var i = 0; i < numPrefabs; i++)
@@ -108,8 +118,8 @@ namespace Oni2Xml.SaveData
 
             // Game State
             writer.WriteChars(SAVE_HEADER);
-            writer.WriteInt32(6);
-            writer.WriteInt32(0);
+            writer.WriteInt32(this.versionMajor);
+            writer.WriteInt32(this.versionMinor);
 
             writer.WriteInt32(this.gameObjectRoots.Count);
             foreach(var gameObjectRoot in this.gameObjectRoots)
