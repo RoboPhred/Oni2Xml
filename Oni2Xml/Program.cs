@@ -32,7 +32,7 @@ namespace Oni2Xml
 
         static void Save(OniSaveData data, string path, byte[] original = null)
         {
-            var writer = new Serialization.BinaryWriter(true);
+            var writer = new Serialization.BinaryWriter();
             data.Serialize(writer);
             var bytes = writer.GetBytes();
 
