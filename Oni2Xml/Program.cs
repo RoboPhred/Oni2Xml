@@ -43,6 +43,7 @@ namespace Oni2Xml
             }
         }
 
+
         static void ExportObjectsCmd(string[] args)
         {
             string savePath;
@@ -71,7 +72,7 @@ namespace Oni2Xml
             // Hack until we switch to something more sane.
             //  This is where xml will be useful, as element names or attributes can represent the data type.
 
-            var json = JsonConvert.SerializeObject(saveData, new JsonSerializerSettings()
+            var json = JsonConvert.SerializeObject(saveData.gameObjectRoots, new JsonSerializerSettings()
             {
                 TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
                 TypeNameHandling = TypeNameHandling.Auto,
