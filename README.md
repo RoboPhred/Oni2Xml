@@ -1,11 +1,14 @@
 # Oni2Xml
 Converts Oxygen Not Included game saves to human readable and editable xml
 
-
+```
 oni2xml export-objects <save file path>
+```
 Exports save files to <save-name>.gameObjects.json
 
+```
 oni2xml import-objects <game object json path> <save path>
+```
 Replaces the save file's game objects with ones defined in the gameObjects.json file
 
 
@@ -14,8 +17,8 @@ Game objects are stored by object tag / name:
 {
   "tag": "TheObject",
   "gameObjects": [...]
+ }
 ```
-
 Game objects keys of interest:
 position
 rotation
