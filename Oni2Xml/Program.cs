@@ -53,26 +53,11 @@ namespace Oni2Xml
             }
         }
 
-        static void Save(OniSaveData data, string path, byte[] ensureEquals = null)
+        static void Save(OniSaveData data, string path)
         {
             var writer = new Serialization.BinaryWriter();
             data.Serialize(writer);
             var bytes = writer.GetBytes();
-
-            if (ensureEquals != null)
-            {
-                for(var i = 0; i < Math.Min(ensureEquals.Length, bytes.Length); i++)
-                {
-                    if (bytes[i] != ensureEquals[i])
-                    {
-                        throw new Exception("Round trip mismatch at byte " + i);
-                    }
-                }
-                if (ensureEquals.Length != bytes.Length)
-                {
-                    throw new Exception("Round trip mismatch: lengths differ");
-                }
-            }
             File.WriteAllBytes(path, bytes);
         }
     }
