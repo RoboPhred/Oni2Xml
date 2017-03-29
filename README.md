@@ -85,3 +85,14 @@ Search for the attribute name you want, it will look like:
 
 
 More details to follow.
+
+TODO:
+Code needs to be cleaned up, set up for multiple versions, export other sections.
+UI - Template files that provide ui for editing sections and so on.  Use case: make it easy to spawn in new dups, npcs, buildings, so on.
+
+
+Licenseish:
+Don't use it in other projects at the moment.  Will revisit this later when I am further along.
+
+Contributing:
+Go for it.  fork on github, add stuff, send pull request.
