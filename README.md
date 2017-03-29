@@ -6,6 +6,9 @@ While the tool was developed and works with pre-TU saves, it is currently set up
 As far as I can tell, there is no difference in format.  The check is done by inspecting the save file's version header.
 
 
+Get it here: https://github.com/RoboPhred/Oni2Xml/releases
+
+
 ```
 oni2xml export-objects <save file path>
 ```
