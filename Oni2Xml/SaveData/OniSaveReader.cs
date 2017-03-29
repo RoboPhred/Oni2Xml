@@ -14,14 +14,6 @@ namespace Oni2Xml.SaveData
             this.typeRegistry = typeRegistry;
         }
 
-        public ITypeTemplateRegistry TemplateRegistry
-        {
-            get
-            {
-                return this.typeRegistry;
-            }
-        }
-
         public bool IsFinished
         {
             get
@@ -93,9 +85,14 @@ namespace Oni2Xml.SaveData
             return this.reader.ReadSingle();
         }
 
-        public ObjectInstanceData ReadTemplateData(string name)
+        public bool HasTemplate(string name)
         {
-            return this.typeRegistry.ReadTemplate(name, this);
+            return this.typeRegistry.HasTemplate(name);
+        }
+
+        public ObjectInstanceData ReadTemplateObject(string name)
+        {
+            return this.typeRegistry.ReadTemplateObject(name, this);
         }
 
         public ushort ReadUInt16()

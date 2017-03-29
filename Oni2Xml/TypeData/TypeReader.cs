@@ -31,7 +31,7 @@ namespace Oni2Xml.TypeData
                 throw new Exception("Could not find type template for " + name);
             }
 
-            var data = new ObjectInstanceData(template);
+            var data = new ObjectInstanceData(template.name);
 
             foreach (var member in template.fields)
             {
@@ -56,7 +56,11 @@ namespace Oni2Xml.TypeData
 
         public void WriteTemplateObject(ObjectInstanceData data, IWriter writer)
         {
-            var template = data.template;
+            var template = this.typeTemplates.FirstOrDefault(x => x.name == data.name);
+            if (template == null)
+            {
+                throw new Exception(string.Format("Template object refers to unknown template name {0}.", data.name));
+            }
 
             foreach(var member in template.fields)
             {

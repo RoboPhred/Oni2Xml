@@ -8,12 +8,12 @@ namespace Oni2Xml.TypeData
 
     class ObjectInstanceData : TypeInstanceData
     {
-        public ObjectInstanceData(TypeTemplate template)
+        public ObjectInstanceData(string name)
         {
-            this.template = template;
+            this.name = name;
         }
 
-        public TypeTemplate template;
+        public string name;
         public IDictionary<string, TypeInstanceData> fields = new Dictionary<string, TypeInstanceData>();
         public IDictionary<string, TypeInstanceData> properties = new Dictionary<string, TypeInstanceData>();
     }

@@ -28,7 +28,6 @@ namespace Oni2Xml.SaveData
             var numComponents = reader.ReadInt32();
             for (var i = 0; i < numComponents; i++)
             {
-                int componentLength = reader.Position;
                 var component = new Component();
                 component.Deserialize(reader);
                 this.components.Add(component);

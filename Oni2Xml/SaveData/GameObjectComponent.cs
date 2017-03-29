@@ -1,6 +1,5 @@
 ﻿using Oni2Xml.Serialization;
 using Oni2Xml.TypeData;
-using System;
 using System.Diagnostics;
 
 namespace Oni2Xml.SaveData
@@ -28,21 +27,15 @@ namespace Oni2Xml.SaveData
                 reader.SkipBytes(length - (reader.Position - startPos));
             }
 
-            if (reader.TemplateRegistry.HasTemplate(this.name))
+            if (reader.HasTemplate(this.name))
             {
-                //var preReadPos = reader.Position;
-                //this.saveLoadData = reader.ReadTemplateData(this.name);
-                //var bytesRemaining = length - (reader.Position - preReadPos);
-                //if (bytesRemaining > 0)
-                //{
-                //    this.saveLoadDetailsData = reader.ReadBytes(bytesRemaining);
-                //}
-                var templateReader = new BinaryReader(data);
-                this.saveLoadableData = reader.TemplateRegistry.ReadTemplate(this.name, templateReader);
-                if (!templateReader.IsFinished)
+                var preReadPos = reader.Position;
+                this.saveLoadableData = reader.ReadTemplateObject(this.name);
+                var bytesRemaining = length - (reader.Position - preReadPos);
+                if (bytesRemaining > 0)
                 {
-                    this.saveLoadableDetailsData = templateReader.ReadBytes(data.Length - templateReader.Position);
                     Debug.WriteLine(string.Format("WARN: Component {0} template did not read all data.  This may be a sign it uses additional parsing (ISaveLoadableDetailJson).", this.name));
+                    this.saveLoadableDetailsData = reader.ReadBytes(bytesRemaining);
                 }
             }
             else
@@ -62,7 +55,11 @@ namespace Oni2Xml.SaveData
 
             if (this.saveLoadableData != null)
             {
-                oniDataWriter.WriteTemplateData(this.saveLoadableData);
+                if (this.saveLoadableData.name != this.name)
+                {
+                    throw new System.Exception("Cannot write game object component data template with a different name than that of the component.");
+                }
+                oniDataWriter.WriteTemplateObject(this.saveLoadableData);
             }
             if (this.saveLoadableDetailsData != null)
             {

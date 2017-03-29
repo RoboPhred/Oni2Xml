@@ -140,14 +140,14 @@ namespace Oni2Xml.SaveData
 
             data.sections.Add(
                 sectionName,
-                reader.ReadTemplateData(sectionName)
+                reader.ReadTemplateObject(sectionName)
             );
         }
 
         private static void WriteSection(string sectionName, OniSaveData data, IOniSaveWriter writer)
         {
             writer.WriteKleiString(sectionName);
-            writer.WriteTemplateData(data.sections[sectionName]);
+            writer.WriteTemplateObject(data.sections[sectionName]);
         }
     }
 }

@@ -7,6 +7,6 @@ namespace Oni2Xml.SaveData
     {
         ITypeTemplateRegistry TemplateRegistry { get; }
 
-        void WriteTemplateData(ObjectInstanceData data);
+        void WriteTemplateObject(ObjectInstanceData data);
     }
 }

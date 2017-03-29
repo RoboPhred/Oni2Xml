@@ -81,9 +81,9 @@ namespace Oni2Xml.SaveData
             this.writer.WriteSingle(val);
         }
 
-        public void WriteTemplateData(ObjectInstanceData data)
+        public void WriteTemplateObject(ObjectInstanceData data)
         {
-            this.typeRegistry.WriteTemplate(data, this);
+            this.typeRegistry.WriteTemplateObject(data, this);
         }
 
         public void WriteUInt16(ushort val)

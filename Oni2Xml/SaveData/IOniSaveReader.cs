@@ -6,9 +6,9 @@ namespace Oni2Xml.SaveData
 
     interface IOniSaveReader : IReader
     {
-        ITypeTemplateRegistry TemplateRegistry { get; }
+        bool HasTemplate(string name);
 
-        ObjectInstanceData ReadTemplateData(string name);
+        ObjectInstanceData ReadTemplateObject(string name);
     }
 
 }
