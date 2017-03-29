@@ -1,6 +1,11 @@
 # Oni2Xml
 Converts Oxygen Not Included game saves to human readable and editable xml
 
+Compatibility:
+While the tool was developed and works with pre-TU saves, it is currently set up to act on Thermal Update saves only.
+As far as I can tell, there is no difference in format.  The check is done by inspecting the save file's version header.
+
+
 ```
 oni2xml export-objects <save file path>
 ```
