@@ -1,6 +1,7 @@
 ﻿using Oni2Xml.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Oni2Xml.TypeData
@@ -62,7 +63,7 @@ namespace Oni2Xml.TypeData
                 throw new Exception(string.Format("Template object refers to unknown template name {0}.", data.name));
             }
 
-            foreach(var member in template.fields)
+            foreach (var member in template.fields)
             {
                 TypeInstanceData value;
                 data.fields.TryGetValue(member.name, out value);
@@ -173,7 +174,6 @@ namespace Oni2Xml.TypeData
 
 
                                 var data = new DictionaryInstanceData();
-                                data.OrderedKeys = keys;
                                 for (var i = 0; i < numEntries; i++)
                                 {
                                     data.entries.Add(keys[i], values[i]);
@@ -188,7 +188,7 @@ namespace Oni2Xml.TypeData
                         throw new Exception(string.Format("Unknown valueType {1}", valueType));
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(string.Format("While reading {0}: {1}", info, e.Message), e);
             }
@@ -396,22 +396,18 @@ namespace Oni2Xml.TypeData
                         var dictWriter = new BinaryWriter();
                         // Stores values first, then keys.
 
-                        // TODO: Remove.  Test code to ensure ordering so we can shasum the round trip save for testing.
-                        //var entries = dict.entries.ToArray();
-                        var entries = dict.OrderedKeys.Select(x => new KeyValuePair<TypeInstanceData, TypeInstanceData>(x, dict.entries[x])).ToArray();
-
                         var keyTypeInfo = info.subTypes[0];
                         var valueTypeInfo = info.subTypes[1];
 
 
                         // Values
-                        foreach (var item in entries)
+                        foreach (var item in dict.entries)
                         {
                             this.WriteValue(valueTypeInfo, item.Value, dictWriter);
                         }
 
                         // Keys
-                        foreach (var item in entries)
+                        foreach (var item in dict.entries)
                         {
                             this.WriteValue(keyTypeInfo, item.Key, dictWriter);
                         }
@@ -447,6 +443,12 @@ namespace Oni2Xml.TypeData
         private T EnsurePrimitive<T>(TypeInstanceData data)
         {
             var prim = EnsureInstanceType<PrimitiveInstanceData>(data);
+            if (typeof(T).IsPrimitive)
+            {
+                // TODO: Hack for json.net parsing all numbers as longs / doubles
+                return (T)Convert.ChangeType(prim.value, typeof(T), CultureInfo.InvariantCulture);
+            }
+
             if (prim.value != null && prim.value is T == false)
             {
                 throw new Exception("Expected primitive value of type " + typeof(T).Name);
