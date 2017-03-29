@@ -16,17 +16,6 @@ namespace Oni2Xml.SaveData
             this.name = reader.ReadKleiString();
             int length = reader.ReadInt32();
 
-            int startPos = reader.Position;
-
-            byte[] data = reader.ReadBytes(length);
-
-
-            if (reader.Position - startPos != length)
-            {
-                Debug.WriteLine(string.Format("WARN: Component {0} read differing bytes than length", this.name));
-                reader.SkipBytes(length - (reader.Position - startPos));
-            }
-
             if (reader.HasTemplate(this.name))
             {
                 var preReadPos = reader.Position;
@@ -41,7 +30,7 @@ namespace Oni2Xml.SaveData
             else
             {
                 Debug.WriteLine(string.Format("WARN: Component {0} has no matching type template", this.name));
-                this.saveLoadableDetailsData = data;
+                this.saveLoadableDetailsData = reader.ReadBytes(length);
             }
         }
 
