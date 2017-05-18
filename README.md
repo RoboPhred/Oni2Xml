@@ -2,6 +2,9 @@
 Converts Oxygen Not Included game saves to human readable and editable xml
 
 Compatibility:
+
+This tool is not currently working with the agricultural update 217187 or higher.  This is because the save files are now compressed.  Stay tuned for updates.
+
 While the tool was developed and works with pre-TU saves, it is currently set up to act on Thermal Update saves only.
 As far as I can tell, there is no difference in format.  The check is done by inspecting the save file's version header.
 
