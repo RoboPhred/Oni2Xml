@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Oni2Xml.SaveData
 {
-    [DebuggerDisplay("GameObectRoot {tag}")]
+    [DebuggerDisplay("GameObjectRoot {tag}")]
     class GameObjectRoot : IOniSaveSerializable
     {
         public string tag;
