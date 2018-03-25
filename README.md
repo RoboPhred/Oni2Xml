@@ -1,5 +1,5 @@
 # Oni2Xml
-Converts Oxygen Not Included game saves to human readable and editable xml
+Converts Oxygen Not Included game saves to human readable and editable ~~xml~~ json.
 
 Compatibility:
 
