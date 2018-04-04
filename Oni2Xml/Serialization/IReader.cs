@@ -1,7 +1,11 @@
-﻿namespace Oni2Xml.Serialization
+﻿using System.IO;
+
+namespace Oni2Xml.Serialization
 {
     interface IReader
     {
+        Stream ToStream();
+
         int Position { get; }
 
         bool IsFinished { get; }

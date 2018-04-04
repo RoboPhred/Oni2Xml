@@ -8,6 +8,7 @@ namespace Oni2Xml.SaveData
     {
         public uint buildVersion;
         public uint headerVersion;
+        public bool isCompressed;
         public string data;
 
         public void Deserialize(IReader reader)
@@ -15,6 +16,10 @@ namespace Oni2Xml.SaveData
             this.buildVersion = reader.ReadUInt32();
             var headerSize = reader.ReadInt32();
             this.headerVersion = reader.ReadUInt32();
+            if (this.headerVersion >= 1)
+            {
+                this.isCompressed = reader.ReadInt32() != 0;
+            }
             this.data = Encoding.UTF8.GetString(reader.ReadBytes(headerSize));
         }
 

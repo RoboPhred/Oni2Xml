@@ -2,6 +2,7 @@
 using Oni2Xml.TypeData;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Oni2Xml.SaveData
 {
@@ -13,6 +14,7 @@ namespace Oni2Xml.SaveData
             'A',
             'V'
         };
+
 
         public int versionMajor;
         public int versionMinor;
@@ -39,7 +41,33 @@ namespace Oni2Xml.SaveData
                 templates.Add(template);
             }
 
+            if (header.isCompressed)
+            {
+                var test = reader as Serialization.BinaryReader;
+                var bytes = test.GetBytes();
+                int length = bytes.Length - reader.Position;
+                byte[] compressed = new byte[length];
+                Array.Copy((Array)bytes, reader.Position, (Array)compressed, 0, length);
+                var decompressed = Ionic.Zlib.ZlibStream.UncompressBuffer(compressed);
+                //var decodeStream = new Ionic.Zlib.ZlibStream(reader.ToStream(), Ionic.Zlib.CompressionMode.Decompress);
+                //byte[] decompressed;
+                //using (var memoryStream = new MemoryStream())
+                //{
+                //    decodeStream.CopyTo(memoryStream);
+                //    decompressed = memoryStream.ToArray();
+                //}
+                var decompressedReader = new Serialization.BinaryReader(decompressed);
+                this.Load(decompressedReader);
+            }
+            else
+            {
+                this.Load(reader);
+            }
 
+        }
+
+        private void Load(IReader reader)
+        {
             // "world" string
             var worldHeader = reader.ReadKleiString();
             if (worldHeader != "world")
@@ -72,7 +100,7 @@ namespace Oni2Xml.SaveData
             // Save versions:
             //  pre-tu: 6.0
             //  tu: 7.1
-            if (verMajor != 7 || verMinor > 1)
+            if (verMajor != 7 /*|| verMinor > 1*/)
             {
                 throw new Exception(string.Format("SAVE FILE VERSION MISMATCH! Expected {0}.{1} but got {2}.{3}", 7, 1, verMajor, verMinor));
             }

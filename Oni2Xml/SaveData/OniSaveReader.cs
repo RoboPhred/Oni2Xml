@@ -1,5 +1,6 @@
 ﻿using Oni2Xml.Serialization;
 using Oni2Xml.TypeData;
+using System.IO;
 
 namespace Oni2Xml.SaveData
 {
@@ -28,6 +29,11 @@ namespace Oni2Xml.SaveData
             {
                 return this.reader.Position;
             }
+        }
+
+        public Stream ToStream()
+        {
+            return this.reader.ToStream();
         }
 
         public byte[] RawBytes()

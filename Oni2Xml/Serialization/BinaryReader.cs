@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.IO;
+using System.Text;
 
 namespace Oni2Xml.Serialization
 {
@@ -6,6 +8,20 @@ namespace Oni2Xml.Serialization
     {
         private int idx;
         private byte[] bytes;
+
+        public Stream ToStream()
+        {
+            int length = bytes.Length - this.Position;
+            byte[] compressed = new byte[length];
+            Array.Copy((Array)bytes, this.Position, (Array)compressed, 0, length);
+            return new MemoryStream(compressed);
+            //return new MemoryStream(bytes, idx, bytes.Length - idx);
+        }
+
+        public byte[] GetBytes()
+        {
+            return this.bytes;
+        }
 
         public bool IsFinished
         {
