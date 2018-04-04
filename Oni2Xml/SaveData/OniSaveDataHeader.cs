@@ -29,6 +29,11 @@ namespace Oni2Xml.SaveData
             writer.WriteUInt32(this.buildVersion);
             writer.WriteInt32(data.Length);
             writer.WriteUInt32(this.headerVersion);
+            if (this.headerVersion >= 1)
+            {
+                // Mark us as not compressed for now.
+                writer.WriteInt32(0);
+            }
             writer.WriteBytes(data);
         }
     }
