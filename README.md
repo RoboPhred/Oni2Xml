@@ -1,9 +1,11 @@
 # Oni2Xml
 Converts Oxygen Not Included game saves to human readable and editable ~~xml~~ json.
 
-Compatibility:
+## Compatibility:
 
-This tool is not currently working with the agricultural update 217187 or higher.  This is because the save files are now compressed.  Stay tuned for updates.
+This tool was tested as successfully loading Thermal update and Rancher update saves.  It has only been tested saving Thermal saves.
+
+Note that it will not re-compress your save, so the resulting save file will be much larger.  The game should load this uncompressed save correctly and compress it next time you make a new save.
 
 While the tool was developed and works with pre-TU saves, it is currently set up to act on Thermal Update saves only.
 As far as I can tell, there is no difference in format.  The check is done by inspecting the save file's version header.
