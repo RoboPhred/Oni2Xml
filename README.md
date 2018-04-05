@@ -4,8 +4,9 @@ Converts Oxygen Not Included game saves to human readable and editable ~~xml~~ j
 
 # DEPRECATED
 
-This repository is no longer mantained.
-It is replaced by [oni-save-parser](https://github.com/RoboPhred/oni-save-parser)
+This repository is no longer mantained.  Version 1.1.0 will work up to the Rancher update.
+
+It is being replaced by [oni-save-parser](https://github.com/RoboPhred/oni-save-parser), and will eventually gain a user interface.
 
 ## Compatibility:
 
