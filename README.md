@@ -1,5 +1,11 @@
 # Oni2Xml
+
 Converts Oxygen Not Included game saves to human readable and editable ~~xml~~ json.
+
+# DEPRECATED
+
+This repository is no longer mantained.
+It is replaced by [oni-save-parser](https://github.com/RoboPhred/oni-save-parser)
 
 ## Compatibility:
 
